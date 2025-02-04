@@ -1,0 +1,36 @@
+{
+  "name": "fastree",
+  "version": "1.0.2",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "fastree": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "fs-extra": "^11.3.0",
+    "ora": "^8.2.0",
+    "path": "^0.12.7",
+    "prompts": "^2.4.2",
+    "type-fest": "^4.33.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.13.1",
+    "@types/prompt": "^1.1.9",
+    "@types/prompts": "^2.4.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
