@@ -12,9 +12,21 @@
     "start": "ts-node src/index.ts",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamabhay17/fastree-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iamabhay17/fastree-cli/issues"
+  },
+  "keywords": [
+    "cli",
+    "npm",
+    "generate",
+    "utility"
+  ],
+  "author": "Abhay Bhardwaj",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
