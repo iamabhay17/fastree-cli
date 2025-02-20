@@ -10,18 +10,6 @@ export enum Naming {
 
 export const NAMING_STYLES = [
   {
-    label: "UPPERCASE",
-    value: Naming.Uppercase,
-  },
-  {
-    label: "lowercase",
-    value: Naming.Lowercase,
-  },
-  {
-    label: "Capitalized",
-    value: Naming.Capitalized,
-  },
-  {
     label: "kebab-case",
     value: Naming.KebabCase,
   },

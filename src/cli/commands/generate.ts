@@ -5,8 +5,7 @@ import { promises as fs } from "fs";
 import { ensureDir } from "fs-extra";
 import { Command } from "commander";
 
-import { JoinName } from "../util/join-name.js";
-import { IBuild, IConfig, IFile, IFolder } from "../../types/types.js";
+import { getTemplate, Templates } from "../constants/templates.js";
 
 export const generate = new Command()
   .name("generate")
@@ -30,7 +29,7 @@ const createStructure = async (config: IConfig, feature: string) => {
    * iterate through the structure and create the folders and files
    */
   config.structure.forEach(async (item: IBuild) => {
-    await executeBuild(item, feature, config.defaultExtension);
+    await executeBuild(item, feature);
   });
 };
 
@@ -38,25 +37,23 @@ const createStructure = async (config: IConfig, feature: string) => {
  * Execute the build
  * @param build
  * @param feature
- * @param defaultExtension
  */
 
-const executeBuild = async (
-  build: IBuild,
-  feature: string,
-  defaultExtension: string
-) => {
-  const location = path.resolve(process.cwd(), build.directory);
+const executeBuild = async (build: IBuild, feature: string) => {
+  // get location of folder where file need to be generated
+  const location = path.resolve(process.cwd(), build.path);
+
+  // ensure that folder always exist ( Get Folder or Create new one )
   await ensureDir(location);
 
   if (build.folders) {
-    build.folders.forEach(async (folder) => {
-      await executeFolderBuild(folder, location, feature, defaultExtension);
+    build.folders.forEach(async (folder: IFolder) => {
+      await executeFolderBuild(folder, location, feature);
     });
   }
   if (build.files) {
-    build.files.forEach(async (file) => {
-      await executeFileBuild(file, location, feature, defaultExtension);
+    build.files.forEach(async (file: IFile) => {
+      await executeFileBuild(file, location, feature);
     });
   }
 };
@@ -66,26 +63,29 @@ const executeBuild = async (
  * @param folder Build Folder and files within the folder recursively
  * @param parentDirectory
  * @param feature
- * @param defaultExtension
  */
 const executeFolderBuild = async (
   folder: IFolder,
   parentDirectory: string = process.cwd(),
-  feature: string,
-  defaultExtension: string
+  feature: string
 ) => {
-  const directory = `${parentDirectory}/${folder.name}`;
+  const featureSpecificFolderName = folder.name?.replace(
+    "<feature-name>",
+    feature
+  );
+
+  const directory = `${parentDirectory}/${featureSpecificFolderName}`;
   await ensureDir(directory);
 
   if (folder.files) {
-    folder.files.forEach(async (file) => {
-      await executeFileBuild(file, directory, feature, defaultExtension);
+    folder.files.forEach(async (file: IFile) => {
+      await executeFileBuild(file, directory, feature);
     });
   }
 
   if (folder.folders) {
-    folder.folders.forEach(async (subFolder) => {
-      await executeFolderBuild(subFolder, directory, feature, defaultExtension);
+    folder.folders.forEach(async (subFolder: IFolder) => {
+      await executeFolderBuild(subFolder, directory, feature);
     });
   }
 };
@@ -100,22 +100,11 @@ const executeFolderBuild = async (
 const executeFileBuild = async (
   file: IFile,
   parentDirectory: string = process.cwd(),
-  feature: string,
-  defaultExtension: string
+  feature: string
 ) => {
-  const fileName = JoinName(
-    file.delimiter || ".",
-    file.name || feature,
-    file.prefix,
-    file.suffix,
-    file.extension || defaultExtension
-  );
+  const featureSpecificFileName = file.name?.replace("<feature-name>", feature);
+  const fileTemplate = getTemplate(feature, file.template);
 
-  const filePath = path.resolve(parentDirectory, fileName);
-  const content = `export const ${file?.prefix || ""}${feature}${
-    file?.suffix || ""
-  } = () => {
-    return <div>content here</div>
-  }`;
-  await fs.writeFile(filePath, content, "utf-8");
+  const filePath = path.resolve(parentDirectory, featureSpecificFileName);
+  await fs.writeFile(filePath, fileTemplate, "utf-8");
 };

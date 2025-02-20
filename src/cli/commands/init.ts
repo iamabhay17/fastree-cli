@@ -1,13 +1,10 @@
 import ora from "ora";
 import path from "path";
 import chalk from "chalk";
-import prompts from "prompts";
 
 import { z } from "zod";
 import { promises as fs } from "fs";
 import { Command } from "commander";
-
-import { NAMING_STYLES } from "../constants/naming-styles.js";
 
 const initOptions = z.object({
   cwd: z.string(),
@@ -33,60 +30,25 @@ export const init = new Command()
 const getInitialConfig = async (cwd: string) => {
   const highlight = (text: string) => chalk.cyan(text);
 
-  const values = await prompts([
-    {
-      type: "select",
-      name: "defaultExtension",
-      message: `Select ${highlight("default extention")} for files`,
-      choices: [
-        { title: "Typescript [.ts]", value: ".ts" },
-        { title: "Javascript [.js]", value: ".js" },
-        { title: "TSX [.tsx]", value: ".tsx" },
-        { title: "JSX [.jsx]", value: ".jsx" },
-      ],
-      initial: 0,
-    },
-    {
-      type: "text",
-      name: "dir",
-      initial: "./src/pages",
-      message: `Enter the directory where you want to set up ${highlight(
-        "files/folder"
-      )}`,
-    },
-    {
-      type: "select",
-      name: "namingStyle",
-      message: `Select ${highlight("naming style")}`,
-      choices: NAMING_STYLES.map((convention) => {
-        return {
-          title: convention.label,
-          value: convention.value,
-        };
-      }),
-    },
-    {
-      type: "confirm",
-      name: "useIndexExport",
-      message: `Do you want to use ${highlight(
-        "Index.js"
-      )} for exporting files?`,
-      initial: true,
-    },
-  ]);
-
   const config = {
-    defaultExtension: values.defaultExtension,
-    namingStyle: values.namingStyle,
     structure: [
       {
-        directory: values.dir,
-        files: [],
-        folders: [],
-        ensureDirectory: true,
+        path: "src/components",
+        folders: [
+          {
+            name: "<feature-name>",
+            files: [],
+            folders: [],
+          },
+        ],
+        files: [
+          {
+            name: "<feature-name>-component.tsx",
+            template: "ReactComponent",
+          },
+        ],
       },
     ],
-    useIndexExport: values.useIndexExport,
   };
 
   const spinner = ora(`Setting up config`).start();

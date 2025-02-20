@@ -1,0 +1,24 @@
+{
+  "structure": [
+    {
+      "path": "src/components",
+      "folders": [
+        {
+          "name": "<feature-name>",
+          "files": [],
+          "folders": []
+        }
+      ],
+      "files": [
+        {
+          "name": "<feature-name>-component.tsx",
+          "template": "ReactComponent"
+        },
+        {
+          "name": "<feature-name>-hook.tsx",
+          "template": "ReactHook"
+        }
+      ]
+    }
+  ]
+}

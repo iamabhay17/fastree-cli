@@ -1,32 +1,36 @@
-import { Naming } from "../../src/cli/constants/naming-styles.js";
-
 interface IConfig {
-  defaultExtension: ".ts" | ".tsx" | ".js" | ".jsx" | `.${string}`;
-  namingStyle: Naming;
   structure: IBuild[];
-  useIndexExport: boolean;
 }
 
 interface IBuild {
-  directory: string;
+  path: string;
   files: IFile[];
   folders: IFolder[];
 }
 
 interface IBaseProperties {
-  name?: string;
-  prefix?: string;
-  suffix?: string;
-  delimiter?: string;
+  name: string;
 }
 
 interface IFile extends IBaseProperties {
-  extension?: ".ts" | ".tsx" | ".js" | ".jsx";
-  type?: "component" | "utility" | "config" | "other"; // additional metadata
+  template: ITemplate;
 }
 
 interface IFolder extends IBaseProperties {
-  files?: IFile[];
-  folders?: IFolder[];
-  ensureDirectory?: boolean;
+  files: IFile[];
+  folders: IFolder[];
 }
+
+type ITemplate =
+  | "ReactComponent" // Standard React component
+  | "ReactHook" // Custom React hook
+  | "ReactContext" // Context API provider/consumer
+  | "NextLayout" // Layout component (e.g., dashboard layout)
+  | "NextPage" // Page component for Next.js or React Router
+  | "Service" // API service (Axios, Fetch, GraphQL)
+  | "Middleware" // Middleware functions (Express, Next.js, etc.)
+  | "NextApiRoute" // Next.js API route handler
+  | "ExpressRoute" // Express.js API route handler
+  | "Utility" // General utility function file
+  | "Config" // Configuration file (e.g., app settings)
+  | "Constant"; // Constants file
