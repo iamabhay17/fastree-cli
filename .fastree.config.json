@@ -17,6 +17,26 @@
         {
           "name": "<feature-name>-hook.tsx",
           "template": "ReactHook"
+        },
+        {
+          "name": "<feature-name>-context.tsx",
+          "template": "ReactContext"
+        },
+        {
+          "name": "<feature-name>-service.tsx",
+          "template": "Service"
+        },
+        {
+          "name": "<feature-name>-config.tsx",
+          "template": "Config"
+        },
+        {
+          "name": "<feature-name>-route.ts",
+          "template": "ExpressRoute"
+        },
+        {
+          "name": "<feature-name>-constant.tsx",
+          "template": "Constant"
         }
       ]
     }
