@@ -5,7 +5,7 @@ import { promises as fs } from "fs";
 import { ensureDir } from "fs-extra";
 import { Command } from "commander";
 
-import { getTemplate, Templates } from "../constants/templates.js";
+import { getTemplate } from "../constants/templates.js";
 
 export const generate = new Command()
   .name("generate")
